@@ -16,7 +16,12 @@ download_binary() {
   local bin_path=$3
 
   local base_url="https://github.com/stedolan/jq/releases/download"
-  local url="${base_url}/v${version}/${name}-v${version}-$(get_platform)-$(uname -m)"
+  case "$(uname -s)" in
+  "Darwin") binname="jq-osx-amd64" ;;
+  "Linux") binname="jq-linux64" ;;
+  esac
+
+  local url="${base_url}/${name}-${version}/${binname}"
   echo "Downloading ${url}"
   curl -fsSL "${url}" -o "${bin_path}/${name}"
   chmod +x "${bin_path}/${name}"
